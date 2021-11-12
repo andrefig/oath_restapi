@@ -32,4 +32,4 @@
 
 #ignore 
 /setvariables.sh
-#/app/lib/sec_configs.rb
+/app/lib/sec_configs.rb
