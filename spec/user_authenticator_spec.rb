@@ -3,7 +3,8 @@ require 'rails_helper'
 
 describe UserAuthenticator do 
 	describe '#perform' do 
-
+    let(:authenticator) { described_class.new('sample_code') }
+    subject { authenticator.perform }
 
 
 	context 'when the code is incorrect' do #context 
@@ -14,8 +15,8 @@ describe UserAuthenticator do
 					:create_authorization).and_return(error) #Override do método para permitir teste offline
 		end
 		it 'should raise an error' do 
-				authenticator = described_class.new('sample_code')
-				expect{authenticator.perform}.to raise_error(UserAuthenticator::AuthenticationError)
+				#authenticator = described_class.new('sample_code')
+				expect{subject}.to raise_error(UserAuthenticator::AuthenticationError)
 				expect(authenticator.user).to be_nil
 		end
 	end
@@ -40,19 +41,24 @@ describe UserAuthenticator do
       end
  
       it('should save the user when the user does not exists') do
-      	authenticator = described_class.new('sample_code')
+      	#authenticator = described_class.new('sample_code')
         # expect(authenticator.perform).to change{User.count}.by(1)
-        expect {authenticator.perform}.to change { User.count }.by(1)
+        expect {subject}.to change { User.count }.by(1)
         #pp User.last
         expect(User.last.name).to eq('John Smith')
       end
  
       it('should reuse already existing user') do
         user = create :user, user_data
-        authenticator = described_class.new('sample_code')
-        expect {authenticator.perform}.not_to change { User.count }
+        #authenticator = described_class.new('sample_code')
+        expect {subject}.not_to change { User.count }
         #pp User.last
         expect(authenticator.user).to eq(user)
+      end
+      it "should create and set user's acess token" do 
+        #authenticator = described_class.new('sample_code')
+        expect {subject}.to change { AccessToken.count }.by(1)
+        expect(authenticator.access_token).to be_present
       end
 
     end
