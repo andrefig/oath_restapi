@@ -32,4 +32,7 @@
 
 #ignore 
 /setvariables.sh
+#foi enviado um exemplo do arquivo sem os dados de segurança:
 /app/lib/sec_configs.rb
+#Impedir que o arquivo de exemplo seja excluído ou atualizado
+#git update-index --assume-unchanged ./app/lib/sec_configs.rb

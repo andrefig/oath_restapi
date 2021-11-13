@@ -46,6 +46,15 @@ describe UserAuthenticator do
         #pp User.last
         expect(User.last.name).to eq('John Smith')
       end
+ 
+      it('should reuse already existing user') do
+        user = create :user, user_data
+        authenticator = described_class.new('sample_code')
+        expect {authenticator.perform}.not_to change { User.count }
+        #pp User.last
+        expect(authenticator.user).to eq(user)
+      end
+
     end
   end
 end
